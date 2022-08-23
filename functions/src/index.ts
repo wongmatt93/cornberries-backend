@@ -1,0 +1,13 @@
+import * as functions from "firebase-functions";
+import express from "express";
+import cors from "cors";
+import unicornNotesRouter from "./routes/unicornNotesRouter";
+import blueberriesRouter from "./routes/blueberriesRouter";
+import UserProfilesRouter from "./routes/userProfilesRouter";
+const app = express();
+app.use(cors());
+app.use(express.json());
+app.use("/unicorn_notes", unicornNotesRouter);
+app.use("/blueberries", blueberriesRouter);
+app.use("/user_profiles", UserProfilesRouter);
+export const api = functions.https.onRequest(app);

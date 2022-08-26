@@ -3,14 +3,14 @@ import { ObjectId } from "mongodb";
 import { getClient } from "../db";
 import UserProfile from "../models/UserProfile";
 
-const UserProfilesRouter = express.Router();
+const userProfilesRouter = express.Router();
 
 const errorResponse = (error: any, res: any) => {
   console.error("FAIL", error);
   res.status(500).json({ message: "Internal Server Error" });
 };
 
-UserProfilesRouter.get("/", async (req, res) => {
+userProfilesRouter.get("/", async (req, res) => {
   try {
     const client = await getClient();
     const cursor = client.db().collection<UserProfile>("user_profiles").find();
@@ -21,7 +21,7 @@ UserProfilesRouter.get("/", async (req, res) => {
   }
 });
 
-UserProfilesRouter.get("/:id", async (req, res) => {
+userProfilesRouter.get("/:id", async (req, res) => {
   try {
     const id: string = req.params.id;
     const client = await getClient();
@@ -37,7 +37,7 @@ UserProfilesRouter.get("/:id", async (req, res) => {
   }
 });
 
-UserProfilesRouter.post("/", async (req, res) => {
+userProfilesRouter.post("/", async (req, res) => {
   try {
     const newProfile: UserProfile = req.body;
     const client = await getClient();
@@ -51,7 +51,7 @@ UserProfilesRouter.post("/", async (req, res) => {
   }
 });
 
-UserProfilesRouter.delete("/:id", async (req, res) => {
+userProfilesRouter.delete("/:id", async (req, res) => {
   try {
     const id: string = req.params.id;
     const client = await getClient();
@@ -67,4 +67,4 @@ UserProfilesRouter.delete("/:id", async (req, res) => {
   }
 });
 
-export default UserProfilesRouter;
+export default userProfilesRouter;

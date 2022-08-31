@@ -26,4 +26,48 @@ unicornBuddiesRouter.get("/:uid", async (req, res) => {
   }
 });
 
+unicornBuddiesRouter.post("/", async (req, res) => {
+  try {
+    const newBuddy: UnicornBuddies = req.body;
+    const client = await getClient();
+    await client
+      .db()
+      .collection<UnicornBuddies>("unicorn_buddies")
+      .insertOne(newBuddy);
+    res.status(200).json(newBuddy);
+  } catch (err) {
+    errorResponse(err, res);
+  }
+});
+
+unicornBuddiesRouter.put("/:uid/:uid2", async (req, res) => {
+  try {
+    const uid1: string = req.params.uid;
+    const uid2: string = req.params.uid2;
+    const client = await getClient();
+    const result = await client
+      .db()
+      .collection<UnicornBuddies>("unicorn_buddies")
+      .updateOne({ uid1, uid2 }, { $set: { accepted: true } });
+    res.status(200).json(result);
+  } catch (err) {
+    errorResponse(err, res);
+  }
+});
+
+unicornBuddiesRouter.delete("/:uid/:uid2", async (req, res) => {
+  try {
+    const uid1: string = req.params.uid;
+    const uid2: string = req.params.uid2;
+    const client = await getClient();
+    await client
+      .db()
+      .collection<UnicornBuddies>("unicorn_buddies")
+      .deleteOne({ uid1, uid2 });
+    res.status(204);
+  } catch (err) {
+    errorResponse(err, res);
+  }
+});
+
 export default unicornBuddiesRouter;
